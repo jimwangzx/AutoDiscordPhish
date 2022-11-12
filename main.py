@@ -33,7 +33,14 @@ def sendCaptcha(verification_code):
 
 def solveCaptcha():
     verification_code = getCaptchaText()
-    sendCaptcha(verification_code)
+    # Sleep a random time to avoid detection of automatic captcha resolution
+    time.sleep(randint(10, 15))
+    if len(verification_code) == 6:
+        sendCaptcha(verification_code)
+    else:
+        notifyDiscord()
+        print('Captcha not solved, stopping')
+        exit()
 
 def checkCaptcha():
     img_captcha = pyautogui.locateOnScreen(captcha_file, confidence=precision, grayscale=True, region=(0, 0, 1920, 1080))
