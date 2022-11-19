@@ -2,6 +2,7 @@ import pyautogui
 import time
 import requests
 import pytesseract
+from random import randint
 
 delay_between_clicks = 2.2
 delay_bewteen_img_check = 0.1
