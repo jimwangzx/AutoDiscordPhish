@@ -31,8 +31,7 @@ def sendCaptcha(verification_code):
     pyautogui.write('/verify ' + verification_code, interval=0.25)
     pyautogui.press('enter')
     print('Captcha sent')
-    pyautogui.press('/fish', interval=0.25)
-    pyautogui.press('enter')
+    sendFish()
 
 def solveCaptcha():
     verification_code = getCaptchaText()
@@ -43,13 +42,25 @@ def solveCaptcha():
     else:
         notifyDiscord()
         print('Captcha not solved, stopping')
-        exit()
+        print('Captcha text: ' + verification_code)
+        
+        button = pyautogui.locateOnScreen(image, confidence=precision, grayscale=True, region=(0, 0, 1920, 1080))
+        while button is None:
+            time.sleep(30)
+            button = pyautogui.locateOnScreen(image, confidence=precision, grayscale=True, region=(0, 0, 1920, 1080))
+        
+        print('Button found, restarting')
+        sendFish()
 
 def checkCaptcha():
     img_captcha = pyautogui.locateOnScreen(captcha_file, confidence=precision, grayscale=True, region=(0, 0, 1920, 1080))
     if img_captcha is not None:
         print('Captcha found, stopping')
         solveCaptcha()
+
+def sendFish():
+    pyautogui.press('/fish', interval=0.25)
+    pyautogui.press('enter')
 
 def notifyDiscord():
     url = url_webhook
@@ -65,6 +76,7 @@ def getImagePosition(image):
         print('Button not found')
         time.sleep(delay_bewteen_img_check)
         button = pyautogui.locateOnScreen(image, confidence=precision, grayscale=True, region=(0, 0, 1920, 1080))
+        sendFish()
         x += 1
         if x > max_retry:
             # call webhook discord
