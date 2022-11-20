@@ -2,15 +2,17 @@ import pyautogui
 import time
 import requests
 import pytesseract
+import os
 from random import randint
+from dotenv import load_dotenv
 
 delay_between_clicks = 2.2
 delay_bewteen_img_check = 0.1
 precision = 0.9
 max_retry = 3
 button_file = 'assets/img/button.png'
-url_webhook = 'https://discord.com/api/webhooks/YOUR_WEBHOOK'
-discord_id = 'YOUR_DISCORD_ID'
+url_webhook = os.getenv('URL_WEBHOOK')
+discord_id = os.getenv('DISCORD_ID')
 captcha_file = 'assets/img/screen-captcha.png'
 current_captcha_file = 'assets/img/current_captcha.png'
 
