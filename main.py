@@ -6,6 +6,8 @@ import os
 from random import randint
 from dotenv import load_dotenv
 
+load_dotenv()
+
 delay_between_clicks = 2.2
 delay_bewteen_img_check = 0.1
 precision = 0.9
@@ -63,11 +65,14 @@ def sendFish():
     pyautogui.press('enter')
 
 def notifyDiscord():
-    url = url_webhook
-    data = {
-        'content': '<@'+ discord_id +'> the bot is stuck, please check it'
-    }
-    requests.post(url, json=data)
+    try:
+        url = url_webhook
+        data = {
+            'content': '<@'+ discord_id +'> the bot is stuck, please check it'
+        }
+        requests.post(url, json=data)
+    except:
+        print('Error while sending discord notification')
 
 def getImagePosition(image):
     button = pyautogui.locateOnScreen(image, confidence=precision, grayscale=True, region=(0, 0, 1920, 1080))
